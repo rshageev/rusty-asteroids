@@ -1,9 +1,9 @@
+mod render;
 mod state;
 mod update;
-mod render;
 
-use state::*;
 use macroquad::prelude::*;
+use state::*;
 
 fn init_game() -> GameState {
     GameState {
@@ -31,8 +31,10 @@ fn get_input() -> InputState {
 async fn main() {
     let mut state = init_game();
     loop {
-        state = update::update(state, get_input(), get_frame_time());
-        render::draw(&state);
+        let input = get_input();
+        let dt = get_frame_time();
+        state = update::update(state, &input, dt);
+        render::draw(&state, &input);
         next_frame().await
     }
 }
